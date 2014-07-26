@@ -103,7 +103,7 @@ router.route('/users/add')
         });
     });
 
-router.route('/jobs/list')
+router.route('/jobs/fetch')
 
     .get(function(req, res) {
 
