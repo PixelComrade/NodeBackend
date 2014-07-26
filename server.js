@@ -158,17 +158,22 @@ app.listen(port);
 console.log('Magic happens on port ' + port);
 
 
+router.route('/payment/prepareForPayment')
+.post(function(req, res) {
+    console.log(req.body);
+    var paymentData = req.body;
 
-var paymentData = {
-    receivers: {
-        "receiver":[{
-            "amount":"10.00",
-            "email":"wxbh@hack.com"}
-        ]
-    },
-    returnUrl: "http://192.168.96.72:8100/#/tab/pay",
-    cancelUrl: "http://192.168.96.72:8100/#/tab/pay"
-}
-//payment.preparePayment(paymentData);
+    payment.preparePayment(paymentData, function(err, data) {
+        if(!err) {
+            res.json(data);
+        } else {
+            res.statusCode = 500;
+            res.end();
+        }
+    });
+});
+
+
+
 
 //payment.getPaymentDetails("AP-2YS23111XB929674X");

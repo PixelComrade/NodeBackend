@@ -47,7 +47,7 @@ var payment = {
                 response += chunk;
             });
             res.on('end', function() {
-                cb(null, response);
+                cb(null, JSON.parse(response));
             })
         });
 
@@ -99,7 +99,7 @@ var payment = {
                 response += chunk;
             });
             res.on('end', function() {
-                cb(null, response);
+                cb(null, JSON.parse(response));
             })
         });
 
