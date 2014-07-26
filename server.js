@@ -4,6 +4,7 @@
 // =============================================================================
 
 // call the packages we need
+var payment = require('./app/service/payment')
 var express    = require('express');        // call express
 var app        = express();                 // define our app using express
 var bodyParser = require('body-parser');
@@ -33,3 +34,18 @@ app.use('/api', router);
 // =============================================================================
 app.listen(port);
 console.log('Magic happens on port ' + port);
+
+
+
+var paymentData = {
+    receivers: {
+        "receiver":[{
+            "amount":"10.00",
+            "email":"wxbh@hack.com"}
+        ]
+    },
+    returnUrl: "http://192.168.96.72:8100/#/tab/pay",
+    cancelUrl: "http://192.168.96.72:8100/#/tab/pay"
+}
+payment.preparePayment(paymentData);
+
