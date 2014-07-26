@@ -47,5 +47,6 @@ var paymentData = {
     returnUrl: "http://192.168.96.72:8100/#/tab/pay",
     cancelUrl: "http://192.168.96.72:8100/#/tab/pay"
 }
-payment.preparePayment(paymentData);
+//payment.preparePayment(paymentData);
 
+//payment.getPaymentDetails("AP-2YS23111XB929674X");
