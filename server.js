@@ -67,7 +67,7 @@ router.route('/users/login')
             //console.log(req.body.Password);
 
             if(rows[0]['Password'] == req.body.Password) {
-                res.json({users: rows[0]});
+                res.json({user: rows[0]});
             }
             else
                 res.json({error: 'Password doesn\'t match'});
@@ -82,7 +82,14 @@ router.route('/users/add')
     .post(function(req, res) { 
 
         var sql1 = 'INSERT INTO `back`.`users` (`AccountName`, `Password`, `FirstName`, `Surname`, `PhoneNo`, `Email`, `PayPalAccount`, `SellerPoints`, `BuyerPoints`) VALUES ';
-        var sql2 = '("' + req.body.AccountName + '","' + req.body.Password + '","' + req.body.FirstName + '","' + req.body.Surname + '","' + req.body.PhoneNo + '","' + req.body.Email + '","' + req.body.PayPalAccount + '","0","0")';
+        var sql2 = '("' + req.body.AccountName + 
+            '","' + req.body.Password + 
+            '","' + req.body.FirstName + 
+            '","' + req.body.Surname + 
+            '","' + req.body.PhoneNo + 
+            '","' + req.body.Email + 
+            '","' + req.body.PayPalAccount + 
+            '","0","0")';
 
         connection.query(sql1 + sql2, function(err, rows, fields) {
             if (err) throw err;
@@ -91,6 +98,49 @@ router.route('/users/add')
             connection.query(sqlresult, function(err, rows, fields) {
                 if (err) throw err;
                 res.json({user: rows[0]});
+            });
+        });
+    });
+
+router.route('/jobs/list')
+
+    .get(function(req, res) {
+
+        var sql = "SELECT * FROM back.jobs";
+
+        connection.query(sql, function(err, rows, fields) {
+            if (err) throw err;
+            res.json({jobs: rows[0]});
+        });
+    });
+
+router.route('/jobs/add')
+
+    .post(function(req, res) {
+
+        // ('1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');
+
+        var sql1 = 'INSERT INTO `back`.`jobs` (`JobName`, `Description`, `Location`, `Owner`, `AssignedTo`, `Charity`, `CharityAmount`, `AssignedToAmount`, `CharityReceipt`, `AssignedToReceipt`, `Status`) VALUES ';
+        var sql2 = '("' + req.body.JobName + 
+            '","' + req.body.Description + 
+            '","' + req.body.Location + 
+            '","' + req.body.Owner + 
+            '","' + '' + 
+            '","' + '' + 
+            '","' + req.body.CharityAmount + 
+            '","' + req.body.AssignedToAmount + 
+            '","' + '' + 
+            '","' + '' + 
+            '","' + "Listed" + 
+        '")';
+
+        connection.query(sql1 + sql2, function(err, rows, fields) {
+            if (err) throw err;
+
+            sqlresult = "SELECT * FROM back.jobs WHERE JobName = '" + req.body.JobName + "'";
+            connection.query(sqlresult, function(err, rows, fields) {
+                if (err) throw err;
+                res.json({job: rows[0]});
             });
         });
     });
