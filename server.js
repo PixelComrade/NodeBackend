@@ -103,16 +103,27 @@ router.route('/users/add')
         });
     });
 
-router.route('/jobs/list')
+router.route('/jobs/fetch')
 
     .get(function(req, res) {
 
-        var sql = "SELECT * FROM back.jobs";
+        var sql = "";
+        if(req.body.id != null) {
 
-        connection.query(sql, function(err, rows, fields) {
-            if (err) throw err;
-            res.json({jobs: rows[0]});
-        });
+            sql = "SELECT * FROM back.jobs";
+            connection.query(sql, function(err, rows, fields) {
+                if (err) throw err;
+                res.json({jobs: rows});
+            });
+        }
+        else {
+
+            sql = "SELECT * FROM back.jobs WHERE id = '" + id + "'";
+            connection.query(sql, function(err, rows, fields) {
+                if (err) throw err;
+                res.json({job: rows[0]});
+            });
+        }        
     });
 
 router.route('/jobs/add')
@@ -144,6 +155,59 @@ router.route('/jobs/add')
                 res.json({job: rows[0]});
             });
         });
+    });
+
+router.route('/jobs/complete')
+
+    .post(function(req, res) {
+
+        // Get the job id
+
+        var sql = 'UPDATE `back`.`jobs` SET ' +
+            '`Charity`="' + req.body.Charity + '",' + 
+            '`CharityReceipt`="' + req.body.CharityReceipt + '",' + 
+            '`AssignedToReceipt`="' + req.body.AssignedToReceipt + '",' + 
+            '`Status`="' + req.body.Status + '",' + 
+            'WHERE id = "' + req.body.JobId + '"';
+
+        connection.query(sqlresult, function(err, rows, fields) {
+            if (err) throw err;
+            res.json({status: 'complete'});
+        });
+
+        sql = null;
+        sql = 'UPDATE `back`.`users` SET ' +
+            '`BuyerPoints`="' + req.body.BuyerPoints + '",' + 
+            '`SellerPoints`="' + req.body.SellerPoints + '",' + 
+            'WHERE id = "' + req.body.UserId + '"';
+
+        connection.query(sqlresult, function(err, rows, fields) {
+            if (err) throw err;
+            res.json({status: 'complete'});
+        });
+    });
+
+router.route('/charities/fetch')
+
+    .get(function(req, res) {
+
+        var sql = "";
+        if(req.body.id != null) {
+
+            sql = "SELECT * FROM back.charities";
+            connection.query(sql, function(err, rows, fields) {
+                if (err) throw err;
+                res.json({charities: rows});
+            });
+        }
+        else {
+
+            sql = "SELECT * FROM back.charities WHERE id = '" + id + "'";
+            connection.query(sql, function(err, rows, fields) {
+                if (err) throw err;
+                res.json({charity: rows[0]});
+            });
+        }    
     });
 
 // more routes for our API will happen here
