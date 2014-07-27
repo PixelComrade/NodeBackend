@@ -108,7 +108,7 @@ router.route('/jobs/fetch')
     .get(function(req, res) {
 
         var sql = "";
-        if(req.body.id != null) {
+        if(req.body.id == null) {
 
             sql = "SELECT * FROM back.jobs";
             connection.query(sql, function(err, rows, fields) {
@@ -192,7 +192,7 @@ router.route('/charities/fetch')
     .get(function(req, res) {
 
         var sql = "";
-        if(req.body.id != null) {
+        if(req.body.id == null) {
 
             sql = "SELECT * FROM back.charities";
             connection.query(sql, function(err, rows, fields) {
